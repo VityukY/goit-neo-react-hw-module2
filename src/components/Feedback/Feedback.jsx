@@ -1,17 +1,15 @@
 
-export default function Feedback ({feedbacks}) {
-    const total = Object.values(feedbacks).reduce((acc, value) => acc + value, 0);
-    const possitives = feedbacks.good/  (feedbacks.good + feedbacks.bad) * 100|| 0;
-    const allRating = {...feedbacks,'total':total,'possitives':possitives}
-
+export default function Feedback ({feedbacks, total}) {
+    const possitives = ((feedbacks.good + feedbacks.neutral)/  total) * 100|| 0;
     return <>
-    <ul>
-        <li>Good: {allRating.good}</li>
-        <li>Neutral: {allRating.neutral}</li>
-        <li>Bad: {allRating.bad}</li>
-        <li>Total: {allRating.total}</li>
-        <li>possitives: {allRating.possitives.toFixed(2)}%</li>
-    </ul>
     
+    {total ? <ul>
+        <li>Good: {feedbacks.good}</li>
+        <li>Neutral: {feedbacks.neutral}</li>
+        <li>Bad: {feedbacks.bad}</li>
+        <li>Total: {total}</li>
+        <li>possitives: {possitives.toFixed(2)}%</li>
+    </ul>:<p>There is no feedback</p>}
+        
     </>
 }
