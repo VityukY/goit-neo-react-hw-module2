@@ -1,18 +1,11 @@
-export default function Button ({title , feedbackUpdates,feedbacks}) {
+export default function Button ({resetFeedbacks,title , updateRating}) {
 
     return <button
         onClick={() => {
             if (title=='Reset'){
-                feedbackUpdates({
-                    good:0,
-                    bad:0,
-                    neutral:0
-                })
+                resetFeedbacks()
             }else{
-                feedbackUpdates({
-                    ...feedbacks,
-                   [title]:feedbacks[title]+1
-                })
+                updateRating(title)
             }
         
     }

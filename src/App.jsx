@@ -3,6 +3,9 @@ import './App.css'
 import Options from './components/Options/Options'
 import Feedback from './components/Feedback/Feedback'
 import Description from './components/Description/Description'
+import Notifications from './components/Notifications/Notifications'
+
+
 
 function App() {
   const [feedbacks, updateFeedbacks] = useState(() => {   
@@ -12,8 +15,8 @@ function App() {
     }
     return {
       good:0,
-      bad:0,
-      neutral:0
+      neutral:0,
+      bad:0
   };
   }
  )
@@ -23,11 +26,26 @@ function App() {
 }, [feedbacks]);
 
   const total = Object.values(feedbacks).reduce((acc, value) => acc + value, 0);
+  const possitives = ((feedbacks.good + feedbacks.neutral)/  total) * 100|| 0;
+
+  function updateRating (title) {
+    updateFeedbacks({
+      ...feedbacks,
+     [title]:feedbacks[title]+1
+  })
+  }  
+  function resetFeedbacks () {
+      updateFeedbacks({
+        good:0,
+        neutral:0,
+        bad:0
+    })
+    }
   return (
     <>
     <Description />
-    <Options total = {total} feedbackUpdates = {updateFeedbacks} feedbacks={feedbacks}/>
-    <Feedback feedbacks={feedbacks} total={total}/>
+    <Options  resetFeedbacks={resetFeedbacks} total = {total} updateRating = {updateRating} feedbacks={feedbacks}/>
+    {total ?<Feedback possitives={possitives} feedbacks={feedbacks} total={total}/>:<Notifications />}
     </>
   )
 }
